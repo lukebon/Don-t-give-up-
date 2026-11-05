@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calma – il tuo supporto quotidiano</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EDF2F3;--card:#fff;--ink:#1E2B37;--mute:#5B6B78;--acc:#2E7774;--on:#fff;--line:#D5DEE2;--m1:#8C9AD6;--m2:#8DB6D9;--m3:#B9C9C4;--m4:#F0CE7A;--m5:#F2A65A;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121B22;--card:#1A2630;--ink:#E6EDF1;--mute:#9AABB7;--acc:#6FC2BD;--on:#0E1A1F;--line:#2B3A46;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121B22;--card:#1A2630;--ink:#E6EDF1;--mute:#9AABB7;--acc:#6FC2BD;--on:#0E1A1F;--line:#2B3A46;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.5 Nunito,system-ui,sans-serif;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+main{max-width:520px;margin:0 auto;padding:20px 18px}
+h1{font-size:28px;line-height:1.2;margin:8px 0 4px;font-weight:800}
+h2{font-size:20px;margin:0 0 6px;font-weight:800}
+p{margin:0 0 12px}.mute{color:var(--mute);font-size:15px}
+section[hidden]{display:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0}
+button,input{font:inherit;color:inherit}
+.btn{background:var(--acc);color:var(--on);border:0;border-radius:14px;padding:12px 18px;font-weight:800;cursor:pointer;min-height:48px}
+.btn.ghost{background:transparent;color:var(--acc);border:2px solid var(--acc)}
+.btn:focus-visible,.mood:focus-visible,nav button:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.moods{display:flex;gap:8px;justify-content:space-between}
+.mood{flex:1;border:2px solid var(--line);background:transparent;border-radius:14px;padding:10px 0 6px;font-size:30px;cursor:pointer;line-height:1.1}
+.mood small{display:block;font-size:11px;color:var(--mute);margin-top:2px}
+.mood[aria-pressed="true"]{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent)}
+.chart{display:flex;align-items:flex-end;gap:5px;height:110px;margin-top:10px}
+.chart div{flex:1;text-align:center;font-size:11px;color:var(--mute)}
+.chart i{display:block;border-radius:6px 6px 3px 3px;margin-bottom:4px}
+.step{font-size:19px;font-weight:600}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+input[type=text],input[type=tel]{width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:var(--bg);margin-bottom:10px;min-height:48px}
+.breath{display:grid;place-items:center;height:260px}
+#orb{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--m2),var(--acc));display:grid;place-items:center;color:#fff;font-weight:800;transition:transform 4s ease-in-out}
+.help a.btn{display:inline-flex;align-items:center;text-decoration:none}
+.past{border-top:1px solid var(--line);padding-top:8px;margin-top:8px;font-size:15px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:12px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;background:none;border:0;border-radius:12px;padding:8px 0;font-size:12px;color:var(--mute);cursor:pointer;font-weight:600}
+nav button span{display:block;font-size:22px}
+nav button[aria-current="true"]{color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,transparent)}
+.hugbtn{margin:4px 0 2px}
+.pop{position:fixed;inset:0;background:rgba(10,20,28,.55);display:grid;place-items:center;padding:20px;z-index:20}
+.pop[hidden]{display:none}
+.pop .box{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px;max-width:360px;width:100%;text-align:center}
+.pop svg{width:190px;height:190px}
+.pop h2{font-size:24px}
+.arm{stroke:var(--acc);stroke-width:16;stroke-linecap:round;transform:rotate(-100deg)}
+#armR{transform:rotate(100deg)}
+.heart{opacity:0}
+.go #armL{animation:hugL 1.6s .5s ease-in-out both}
+.go #armR{animation:hugR 1.6s .5s ease-in-out both}
+.go .heart{animation:pulse 1s 1.9s ease-out both;transform-origin:100px 22px}
+@keyframes hugL{from{transform:rotate(40deg)}to{transform:rotate(-100deg)}}
+@keyframes hugR{from{transform:rotate(-40deg)}to{transform:rotate(100deg)}}
+@keyframes pulse{0%{opacity:0;transform:scale(.3)}60%{opacity:1;transform:scale(1.25)}100%{opacity:1;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){#orb{transition:none}.go #armL,.go #armR,.go .heart{animation:none}.heart{opacity:1}}
+</style>
+</head>
+<body>
+<main>
+<section id="oggi">
+  <h1>Come stai oggi?</h1>
+  <p class="mute" id="date"></p>
+  <button class="btn ghost hugbtn" id="hugbtn">Ho bisogno di un abbraccio 🤗</button>
+  <div class="card"><div class="moods" id="moods"></div></div>
+  <div class="card"><h2>Il tuo piccolo passo</h2><p class="step" id="step"></p>
+    <div class="row"><button class="btn" id="done"></button><button class="btn ghost" id="other">Cambia idea</button></div></div>
+  <div class="card"><h2>Tre cose belle di oggi</h2><p class="mute">Anche piccolissime: un caffè, un saluto, il sole.</p>
+    <input type="text" id="g0" placeholder="Prima cosa" maxlength="120"><input type="text" id="g1" placeholder="Seconda cosa" maxlength="120"><input type="text" id="g2" placeholder="Terza cosa" maxlength="120">
+    <button class="btn" id="gsave">Salva gratitudine</button><div id="past"></div></div>
+</section>
+<section id="umore" hidden>
+  <h1>Il tuo umore</h1><p class="mute">Gli ultimi 14 giorni. Un giorno storto non cancella il resto.</p>
+  <div class="card"><div class="chart" id="chart"></div><p class="mute" id="avg" style="margin-top:12px"></p></div>
+</section>
+<section id="respira" hidden>
+  <h1>Respira</h1><p class="mute">Circa un minuto. Segui il cerchio: inspira, trattieni, espira lentamente.</p>
+  <div class="card"><div class="breath"><div id="orb">Pronto?</div></div>
+    <div class="row" style="justify-content:center"><button class="btn" id="bstart">Inizia</button></div></div>
+</section>
+<section id="aiuto" class="help" hidden>
+  <h1>Aiuto</h1><p>Se pensi di farti del male o sei in pericolo, chiama subito il 112.</p>
+  <div class="card"><h2>Emergenze</h2><p class="mute">Numero unico europeo, gratuito, sempre attivo.</p><a class="btn" href="tel:112">Chiama 112</a></div>
+  <div class="card"><h2>Telefono Amico Italia</h2><p class="mute">Ascolto per chi si sente solo o in difficoltà. Controlla gli orari su telefonoamico.it.</p><a class="btn" href="tel:+390223272327">Chiama 02 2327 2327</a></div>
+  <div class="card"><h2>Una persona di fiducia</h2><p class="mute">Salva qualcuno da chiamare nei momenti difficili.</p>
+    <input type="text" id="cname" placeholder="Nome" maxlength="40"><input type="tel" id="ctel" placeholder="Numero di telefono" maxlength="20">
+    <div class="row"><button class="btn ghost" id="csave">Salva contatto</button><a class="btn" id="ccall" href="#" hidden>Chiama</a></div></div>
+  <p class="mute">Calma è un supporto quotidiano, non sostituisce un medico o uno psicologo. Parlane con loro: chiedere aiuto è una forza.</p>
+</section>
+</main>
+<div class="pop" id="pop" role="dialog" aria-modal="true" aria-labelledby="pt" hidden>
+  <div class="box">
+    <svg viewBox="0 0 200 200" id="omino" aria-hidden="true">
+      <g class="heart"><text x="100" y="34" text-anchor="middle" font-size="30">❤️</text></g>
+      <ellipse cx="100" cy="150" rx="32" ry="40" fill="var(--m2)"/>
+      <circle cx="100" cy="82" r="30" fill="var(--m4)"/>
+      <path d="M88 80 q4 -5 8 0 M104 80 q4 -5 8 0 M90 94 q10 10 20 0" stroke="#1E2B37" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <line class="arm" id="armL" x1="80" y1="128" x2="80" y2="174" style="transform-origin:80px 128px"/>
+      <line class="arm" id="armR" x1="120" y1="128" x2="120" y2="174" style="transform-origin:120px 128px"/>
+    </svg>
+    <h2 id="pt">Un abbraccio per te</h2>
+    <p id="hugmsg"></p>
+    <button class="btn" id="popok">Grazie</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<nav id="nav">
+  <button data-t="oggi" aria-current="true"><span>🌱</span>Oggi</button>
+  <button data-t="umore"><span>📈</span>Umore</button>
+  <button data-t="respira"><span>🌬️</span>Respira</button>
+  <button data-t="aiuto"><span>🤝</span>Aiuto</button>
+</nav>
+<script>
+const $=s=>document.querySelector(s);
+let S={moods:{},steps:{},grat:{},offset:0,contact:{}};
+try{Object.assign(S,JSON.parse(localStorage.getItem("calma")||"{}"))}catch(e){}
+const save=()=>{try{localStorage.setItem("calma",JSON.stringify(S))}catch(e){}};
+const key=d=>(d||new Date()).toLocaleDateString("sv");
+const TODAY=key();
+const toast=t=>{const e=$("#toast");e.textContent=t;e.classList.add("on");setTimeout(()=>e.classList.remove("on"),1800)};
+const MOODS=[["😞","Molto giù"],["🙁","Giù"],["😐","Così così"],["🙂","Bene"],["😄","Benissimo"]];
+const COL=["--m1","--m2","--m3","--m4","--m5"];
+const STEPS=["Bevi un bicchiere d’acqua e apri la finestra per un minuto.","Fai una passeggiata di 10 minuti, anche solo intorno all’isolato.","Manda un messaggio a un amico: basta un “ciao, come stai?”.","Fai una doccia o lavati il viso con calma.","Riordina una sola cosa: un cassetto, la scrivania, il letto.","Ascolta una canzone che ti piace, senza fare altro.","Mangia qualcosa di caldo e siediti per farlo.","Stai 5 minuti alla luce del giorno, vicino a una finestra.","Scrivi su un foglio una cosa che ti preoccupa e mettila da parte.","Fai qualche allungamento per il collo e le spalle.","Chiama qualcuno di cui ti fidi, anche per due minuti.","Vai a letto 30 minuti prima del solito.","Butta una cosa che non ti serve più: un foglio, una scatola, un vestito.","Lascia il telefono in un’altra stanza per 15 minuti.","Prepara qualcosa di semplice che ti piace mangiare.","Fai tre respiri lenti prima di rispondere al prossimo messaggio.","Scrivi come ti senti in tre righe, senza giudicarti.","Rifai il letto con cura o cambia le lenzuola.","Esci a prendere una boccata d’aria, anche solo sul balcone.","Guarda la foto di un bel ricordo e rivivilo per un minuto.","Fai un complimento sincero a qualcuno.","Pulisci una cosa piccola: lo specchio, il lavandino, lo schermo del telefono.","Annaffia una pianta, o comprane una piccola.","Bevi un tè o una tisana lentamente, senza telefono.","Crea una playlist di cinque canzoni che ti fanno stare meglio.","Dedica 10 minuti a qualcosa che ti piaceva da bambino: disegnare, costruire, giocare.","Mangia un frutto o qualcosa di fresco.","Cammina a piedi nudi per casa e senti il pavimento sotto i piedi.","Scrivi a qualcuno che non senti da tempo.","Ascolta un podcast o un audiolibro mentre fai altro.","Fai 5 minuti di stretching o yoga seguendo un video.","Ringrazia qualcuno per qualcosa, anche di piccolo.","Spegni gli schermi mezz’ora prima di dormire e leggi due pagine di un libro.","Fai solo i primi 5 minuti di una cosa che rimandi da giorni.","Siediti all’aperto: nota cinque cose che vedi e tre che senti."];
+
+// Navigazione
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("section").forEach(s=>s.hidden=s.id!==b.dataset.t);
+  document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-current",x===b?"true":"false"));
+  if(b.dataset.t==="umore")chart(); if(b.dataset.t!=="respira")stopB(); window.scrollTo(0,0);
+});
+$("#date").textContent=new Date().toLocaleDateString("it",{weekday:"long",day:"numeric",month:"long"});
+
+// Umore
+function moods(){const box=$("#moods");box.textContent="";MOODS.forEach((m,i)=>{
+  const b=document.createElement("button");b.className="mood";b.setAttribute("aria-pressed",S.moods[TODAY]===i+1);
+  b.innerHTML=m[0]+"<small>"+m[1]+"</small>";
+  b.onclick=()=>{S.moods[TODAY]=i+1;save();moods();toast("Umore salvato")};box.appendChild(b)})}
+function chart(){const c=$("#chart");c.textContent="";let sum=0,n=0;
+  for(let i=13;i>=0;i--){const d=new Date(Date.now()-i*864e5),v=S.moods[key(d)];
+    const w=document.createElement("div"),bar=document.createElement("i");
+    bar.style.height=(v?v*17+10:4)+"px";bar.style.background=v?"var("+COL[v-1]+")":"var(--line)";
+    w.appendChild(bar);w.append(d.toLocaleDateString("it",{weekday:"narrow"}));c.appendChild(w);if(v){sum+=v;n++}}
+  $("#avg").textContent=n?"Hai registrato "+n+" giorni su 14. Umore medio: "+MOODS[Math.round(sum/n)-1][1].toLowerCase()+".":"Ancora nessun dato: scegli il tuo umore nella schermata Oggi."}
+
+// Piccolo passo
+function step(){const i=(Math.floor(Date.now()/864e5)+S.offset)%STEPS.length;$("#step").textContent=STEPS[i];
+  const d=S.steps[TODAY];$("#done").textContent=d?"Fatto, bravo ✓":"L’ho fatto";$("#done").style.opacity=d?.7:1}
+$("#done").onclick=()=>{S.steps[TODAY]=!S.steps[TODAY];save();step();if(S.steps[TODAY])toast("Ottimo, un passo alla volta")};
+$("#other").onclick=()=>{S.offset++;save();step()};
+
+// Gratitudine
+function grat(){const g=S.grat[TODAY]||[];[0,1,2].forEach(i=>$("#g"+i).value=g[i]||"");
+  const p=$("#past");p.textContent="";Object.keys(S.grat).filter(k=>k!==TODAY).sort().reverse().slice(0,5).forEach(k=>{
+    const d=document.createElement("div");d.className="past";const t=new Date(k+"T12:00");
+    d.textContent=t.toLocaleDateString("it",{day:"numeric",month:"short"})+": "+S.grat[k].filter(Boolean).join(" · ");p.appendChild(d)})}
+$("#gsave").onclick=()=>{S.grat[TODAY]=[0,1,2].map(i=>$("#g"+i).value.trim());save();toast("Gratitudine salvata")};
+
+// Respirazione
+let tm=null;const orb=$("#orb");
+function stopB(){clearTimeout(tm);tm=null;orb.style.transform="scale(1)";orb.textContent="Pronto?";$("#bstart").textContent="Inizia"}
+function runB(n){
+  if(n>=4){stopB();orb.textContent="Ben fatto";return}
+  const P=[["Inspira",4,1.5],["Trattieni",4,1.5],["Espira",6,1]];let k=0;
+  (function next(){if(k>=3){runB(n+1);return}const[t,s,sc]=P[k++];orb.textContent=t;orb.style.transitionDuration=s+"s";orb.style.transform="scale("+sc+")";tm=setTimeout(next,s*1000)})()}
+$("#bstart").onclick=()=>{if(tm){stopB();return}$("#bstart").textContent="Ferma";runB(0)};
+
+// Contatto di fiducia
+function contact(){const c=S.contact||{};$("#cname").value=c.name||"";$("#ctel").value=c.tel||"";const a=$("#ccall");
+  if(c.tel){a.hidden=false;a.href="tel:"+c.tel.replace(/[^\d+]/g,"");a.textContent="Chiama "+(c.name||"")}else a.hidden=true}
+$("#csave").onclick=()=>{S.contact={name:$("#cname").value.trim(),tel:$("#ctel").value.trim()};save();contact();toast("Contatto salvato")};
+
+// Abbraccio
+const HUGS=["Non sei solo. Oggi basta un passo piccolo, e va bene così.","Sei più forte di quello che senti adesso.","Anche i giorni difficili passano. Respira, io sono qui.","Quello che provi è reale, e chiedere aiuto è coraggio.","Sei importante, anche oggi."];
+function pop(){const s=$("#omino");$("#hugmsg").textContent=HUGS[Math.floor(Math.random()*HUGS.length)];s.classList.remove("go");$("#pop").hidden=false;void s.getBoundingClientRect();s.classList.add("go");$("#popok").focus()}
+const closePop=()=>{$("#pop").hidden=true};
+$("#popok").onclick=closePop;$("#pop").onclick=e=>{if(e.target.id==="pop")closePop()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePop()});
+$("#hugbtn").onclick=pop;
+
+moods();step();grat();contact();
+if(S.hug!==TODAY){S.hug=TODAY;save();pop()}
+</script>
+</body>
+</html>
